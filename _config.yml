@@ -1,7 +1,0 @@
-
-# Deployment
-## Docs: http://zespia.tw/hexo/docs/deploy.html
-deploy:
-  type:github
-  repository:mac-deng.github.com
-  branch:master
