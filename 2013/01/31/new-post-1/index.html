@@ -6,6 +6,8 @@
   <title>new post | mac's blog</title>
   <meta name="author" content="mac deng">
   
+  <meta name="description" content="some experience">
+  
   
   <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 
@@ -22,7 +24,7 @@
 <body>
   <header id="header" class="inner"><div class="alignleft">
   <h1><a href="/">mac's blog</a></h1>
-  <h2><a href="/"></a></h2>
+  <h2><a href="/">share experience</a></h2>
 </div>
 <nav id="main-nav" class="alignright">
   <ul>
@@ -64,16 +66,8 @@
         
   <div class="addthis addthis_toolbox addthis_default_style">
     
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
     
     
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
     
     <a class="addthis_counter addthis_pill_style"></a>
   </div>
@@ -85,6 +79,13 @@
   </div>
 </article>
 
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </div></div>
     <aside id="sidebar" class="alignright">
 <div class="search">
@@ -111,6 +112,18 @@
   <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 
+
+<script type="text/javascript">
+var disqus_shortname = 'Disqus';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
 
 
 
