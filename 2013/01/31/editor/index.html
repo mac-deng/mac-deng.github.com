@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>仅一行代码，打造一个在线编辑器 | mac's blog</title>
+  <meta name="author" content="mac">
+  
+  <meta name="description" content="some Experience">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="仅一行代码，打造一个在线编辑器"/>
+  <meta property="og:site_name" content="mac's blog"/>
+
+  <link rel="alternate" href="/atom.xml" title="mac's blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34831704-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">mac's blog</a></h1>
+  <h2><a href="/">share Experience</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-31T09:30:54.000Z"><a href="/2013/01/31/editor/">Jan 31 2013</a></time>
+      
+      
+  
+    <h1 class="title">仅一行代码，打造一个在线编辑器</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div class="mainContent sep10">
+        <p><img src="http://a.36krcnd.com/photo/35cf53371ddaa066da1e68ef0f34f3f4.jpg!heading" alt=""><br>
+在大部分人眼里，技术宅给人的印象是沉默寡言，总摸不透他心里想些什么，彼此都保持距离。作为半个程序员，我觉得真正的技术宅大部分时间都在找乐子，鼓捣各种想法，和大部分人的极客心理是一样的，程序员也还爱讲笑话，也喜欢烧菜做饭，虽然大多是为了减减压，这样看来和常人没什么不一样。</p>
+
+<p>不一样的地方，技术宅崇尚极致，喜欢极简，又希望简约不简单，背后就是技术宅满心思的不断的尝试，我正在看着一出好戏在上演：</p>
+程序员 Jose Jesus Perez Aguinaga 在 <a target="_blank" data-no-turbolink="true" href="https://coderwall.com/p/lhsrcq">CoderWall</a> 分享了一个小技巧：在浏览器地址栏中输入一行代码：<code>data:text/html, &lt;html contenteditable&gt;</code> ，回车即可把浏览器变临时编辑器（需要浏览器支持 HTML5 属性  contenteditable）。不少程序员受 Jose 的启发，开始对这行代码<a target="_blank" data-no-turbolink="true" href="http://blog.jobbole.com/32823/">加工改造</a>，比如改成支持 Ruby 语法高亮的<a target="_blank" data-no-turbolink="true" href="https://gist.github.com/4666256">编辑器</a>……&quot;</p>
+
+<p> 从引子中可以看到，本来只是简短的小段代码： <code>data:text/html, &lt;html contenteditable&gt;</code>，经过程序员们不断改造，从一个简单的可编辑页面，逐步变成了包括支持 Java、Ruby、Python 等多种 编程语言高亮的代码编辑器，截至不到 1 个小时的最后更新，我已经看到了一个和 <a target="_blank" data-no-turbolink="true" href="http://notepad.cc">notepad.cc</a> 网站功能相近，使用了第三方网站数据库 API 服务存储内容的 <a target="_blank" data-no-turbolink="true" href="https://gist.github.com/4672169">在线编辑器</a> 了：</p>
+<div class="highlight"><pre>data:text/html,
+&lt;style type=&quot;text/css&quot;&gt;
+#e {
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  font-size:16px;
+}
+&lt;/style&gt;
+&lt;div id=&quot;e&quot;&gt;&lt;/div&gt;
+&lt;script src=&quot;<a href="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js&quot;&gt;&lt;/script&amp;gt">http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js&quot;&gt;&lt;/script&amp;gt</a>;
+&lt;script src=&quot;<a href="http://code.jquery.com/jquery-1.9.0.min.js&quot;&gt;&lt;/script&amp;gt">http://code.jquery.com/jquery-1.9.0.min.js&quot;&gt;&lt;/script&amp;gt</a>;
+&lt;script&gt;
+var myKey=&quot;SecretKeyz&quot;;
+$(document).ready(function(){
+    var e = ace.edit(&quot;e&quot;);
+    var url = &quot;<a href="http://api.openkeyval.org/&quot;+myKey">http://api.openkeyval.org/&quot;+myKey</a>;
+    $.ajax({
+      url: url,
+      dataType: &quot;jsonp&quot;,
+      success: function(data){
+       e.setTheme(&quot;ace/theme/tomorrow_night_eighties&quot;);
+       e.getSession().setMode(&quot;ace/mode/markdown&quot;);
+       e.setValue(data);
+      }
+    });
+
+    $(&quot;#e&quot;).on(&quot;keydown&quot;, function (b) {
+      if (b.ctrlKey &amp;&amp; 83 == b.which) {
+        b.preventDefault();
+        var data = myKey+&quot;=&quot;+encodeURIComponent(e.getValue());
+        $.ajax({
+          data: data,
+          url: &quot;<a href="http://api.openkeyval.org/store/">http://api.openkeyval.org/store/</a>&quot;,
+          dataType: &quot;jsonp&quot;,
+          success: function(data){
+            alert(&quot;Saved.&quot;);
+          }
+        });
+      }
+    });
+});
+&lt;/script&gt;
+</pre>
+</div>
+
+<p>将以上代码完整复制，粘贴到 Chrome 或者 Firefox，Safari 浏览器地址栏中（不支持低版本 IE 浏览器），回车打开，稍等片刻一个支持 <code>CTRL</code> + <code>S</code>  保存内容的在线编辑器呈现眼前。</p>
+
+<p>仅一行代码，实现功能相当于系统的记事本程序，感慨技术宅的艺术造诣吧？～</p>
+
+<p><p><em>Update: 感谢 @问题青年a 提供 CoderWall 分享原文。</em></p>
+        <div id="krapi"></div>
+</div></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/other/">other</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:mac-deng.github.com">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/appfog/">appfog</a><small>1</small></li>
+  
+    <li><a href="/tags/node/">node</a><small>1</small></li>
+  
+    <li><a href="/tags/other/">other</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 mac
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'macdeng';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
