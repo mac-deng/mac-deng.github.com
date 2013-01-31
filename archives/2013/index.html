@@ -81,62 +81,15 @@
 程序员 Jose Jesus Perez Aguinaga 在 <a target="_blank" data-no-turbolink="true" href="https://coderwall.com/p/lhsrcq">CoderWall</a> 分享了一个小技巧：在浏览器地址栏中输入一行代码：<code>data:text/html, &lt;html contenteditable&gt;</code> ，回车即可把浏览器变临时编辑器（需要浏览器支持 HTML5 属性  contenteditable）。不少程序员受 Jose 的启发，开始对这行代码<a target="_blank" data-no-turbolink="true" href="http://blog.jobbole.com/32823/">加工改造</a>，比如改成支持 Ruby 语法高亮的<a target="_blank" data-no-turbolink="true" href="https://gist.github.com/4666256">编辑器</a>……&quot;</p>
 
 <p> 从引子中可以看到，本来只是简短的小段代码： <code>data:text/html, &lt;html contenteditable&gt;</code>，经过程序员们不断改造，从一个简单的可编辑页面，逐步变成了包括支持 Java、Ruby、Python 等多种 编程语言高亮的代码编辑器，截至不到 1 个小时的最后更新，我已经看到了一个和 <a target="_blank" data-no-turbolink="true" href="http://notepad.cc">notepad.cc</a> 网站功能相近，使用了第三方网站数据库 API 服务存储内容的 <a target="_blank" data-no-turbolink="true" href="https://gist.github.com/4672169">在线编辑器</a> 了：</p>
-<div class="highlight"><pre>data:text/html,
-&lt;style type=&quot;text/css&quot;&gt;
-#e {
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-  font-size:16px;
-}
-&lt;/style&gt;
-&lt;div id=&quot;e&quot;&gt;&lt;/div&gt;
-&lt;script src=&quot;<a href="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js&quot;&gt;&lt;/script&amp;gt">http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js&quot;&gt;&lt;/script&amp;gt</a>;
-&lt;script src=&quot;<a href="http://code.jquery.com/jquery-1.9.0.min.js&quot;&gt;&lt;/script&amp;gt">http://code.jquery.com/jquery-1.9.0.min.js&quot;&gt;&lt;/script&amp;gt</a>;
-&lt;script&gt;
-var myKey=&quot;SecretKeyz&quot;;
-$(document).ready(function(){
-    var e = ace.edit(&quot;e&quot;);
-    var url = &quot;<a href="http://api.openkeyval.org/&quot;+myKey">http://api.openkeyval.org/&quot;+myKey</a>;
-    $.ajax({
-      url: url,
-      dataType: &quot;jsonp&quot;,
-      success: function(data){
-       e.setTheme(&quot;ace/theme/tomorrow_night_eighties&quot;);
-       e.getSession().setMode(&quot;ace/mode/markdown&quot;);
-       e.setValue(data);
-      }
-    });
-
-    $(&quot;#e&quot;).on(&quot;keydown&quot;, function (b) {
-      if (b.ctrlKey &amp;&amp; 83 == b.which) {
-        b.preventDefault();
-        var data = myKey+&quot;=&quot;+encodeURIComponent(e.getValue());
-        $.ajax({
-          data: data,
-          url: &quot;<a href="http://api.openkeyval.org/store/">http://api.openkeyval.org/store/</a>&quot;,
-          dataType: &quot;jsonp&quot;,
-          success: function(data){
-            alert(&quot;Saved.&quot;);
-          }
-        });
-      }
-    });
-});
-&lt;/script&gt;
-</pre>
-</div>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div></code></pre></td><td class="code"><pre><code><div class="line">data:text/html,</div><div class="line"><span class="xml"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span><span class="css"></div><div class="line"><span class="id">#e</span> <span class="rules">{</div><div class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value">absolute;</span></span></div><div class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">right</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">bottom</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">left</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">font-size</span>:<span class="value"><span class="number">16</span>px;</span></span></div><div class="line"><span class="rule">}</span></span></div><div class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"e"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js"</span>&gt;</span><span class="undefined">&lt;/script&amp;gt;</div><div class="line">&lt;script src="http://code.jquery.com/jquery-1.9.0.min.js"&gt;&lt;/script&amp;gt;</div><div class="line">&lt;script&gt;</div><div class="line">var myKey="SecretKeyz";</div><div class="line">$(document).ready(function(){</div><div class="line">    var e = ace.edit("e");</div><div class="line">    var url = "http://api.openkeyval.org/"+myKey;</div><div class="line">    $.ajax({</div><div class="line">      url: url,</div><div class="line">      dataType: "jsonp",</div><div class="line">      success: function(data){</div><div class="line">       e.setTheme("ace/theme/tomorrow_night_eighties");</div><div class="line">       e.getSession().setMode("ace/mode/markdown");</div><div class="line">       e.setValue(data);</div><div class="line">      }</div><div class="line">    });</div><br><div class="line">    $("#e").on("keydown", function (b) {</div><div class="line">      if (b.ctrlKey &amp;&amp; 83 == b.which) {</div><div class="line">        b.preventDefault();</div><div class="line">        var data = myKey+"="+encodeURIComponent(e.getValue());</div><div class="line">        $.ajax({</div><div class="line">          data: data,</div><div class="line">          url: "http://api.openkeyval.org/store/",</div><div class="line">          dataType: "jsonp",</div><div class="line">          success: function(data){</div><div class="line">            alert("Saved.");</div><div class="line">          }</div><div class="line">        });</div><div class="line">      }</div><div class="line">    });</div><div class="line">});</div><div class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></div></code></pre></td></tr></table></figure>
 
 <p>将以上代码完整复制，粘贴到 Chrome 或者 Firefox，Safari 浏览器地址栏中（不支持低版本 IE 浏览器），回车打开，稍等片刻一个支持 <code>CTRL</code> + <code>S</code>  保存内容的在线编辑器呈现眼前。</p>
 
 <p>仅一行代码，实现功能相当于系统的记事本程序，感慨技术宅的艺术造诣吧？～</p>
 
-<p><p><em>Update: 感谢 @问题青年a 提供 CoderWall 分享原文。</em></p>
+<p><em>Update: 感谢 @问题青年a 提供 CoderWall 分享原文。</em></p>
         <div id="krapi"></div>
-</div></p>
-
+</div>
       
     </div>
     <footer>
@@ -170,18 +123,13 @@ $(document).ready(function(){
         <div class="sep10"></div> 
 <div class="topic_content">
 <p>这个问题的主要原因是express3+中取消了ejs默认的模范如果需要使用需要如下操作：<br>安装</p>
-
-<pre class="prettyprint"><code><span class="pln">npm intall express</span><span class="pun">-</span><span class="pln">partials</span></code></pre>
-
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="title">npm</span> intall express-partials</div></code></pre></td></tr></table></figure>
 <p>在app.js中加入</p>
-
-<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> partials </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;express-partials&#39;</span><span class="pun">);</span></code></pre>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> partials = <span class="keyword">require</span>(<span class="string">'express-partials'</span>);</div></code></pre></td></tr></table></figure>
 
 <p>在app.configure()之中加入如下设置</p>
 
-<pre class="prettyprint"><code><span class="pln">app</span><span class="pun">.</span><span class="kwd">set</span><span class="pun">(</span><span class="str">&#39;view engine&#39;</span><span class="pun">,</span><span class="pln"> </span><span class="str">&#39;ejs&#39;</span><span class="pun">);</span><span class="pln">
-app</span><span class="pun">.</span><span class="kwd">use</span><span class="pun">(</span><span class="pln">partials</span><span class="pun">());</span><span class="pln"> </span></code></pre>
-
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">app.set(<span class="attribute">'view</span> engine', <span class="attribute">'ejs</span>');</div><div class="line">app.<span class="keyword">use</span>(partials()); </div></code></pre></td></tr></table></figure>
 <p>然后再在views目录中新建一个layout.ejs文件，然后就可以使用了。</p>
 </div>
       
