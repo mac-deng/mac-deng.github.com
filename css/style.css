@@ -111,7 +111,6 @@ a:hover {
   text-decoration: none;
 }
 #header h1 {
-  font-weight: normal;
   font-size: 2.5em;
   line-height: 1;
 }
@@ -513,12 +512,9 @@ article footer .addthis iframe {
   font-family: FontAwesome;
 }
 .archive-title {
-  color: #113c73;
+  color: #fff;
   margin-bottom: 30px;
-  -webkit-box-shadow: 2px 3px 10px #3e4001;
-  box-shadow: 2px 3px 10px #3e4001;
   padding: 7px 27px;
-  background: #fff;
 }
 .archive-title:before {
   font-family: FontAwesome;
