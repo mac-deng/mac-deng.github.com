@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   
   <title>mac's blog</title>
-  <meta name="author" content="John Doe">
+  <meta name="author" content="mac">
   
   <meta name="description" content="some Experience">
   
@@ -39,6 +39,55 @@
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-31T08:59:12.000Z"><a href="/2013/01/31/node/">Jan 31 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/31/node/">node</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><h3>关于express 3+中ejs模板的问题</h3> 
+</p>
+<div class="sep10"></div> 
+<div class="topic_content">
+<p>这个问题的主要原因是express3+中取消了ejs默认的模范如果需要使用需要如下操作：<br>安装</p>
+
+<pre class="prettyprint"><code><span class="pln">npm intall express</span><span class="pun">-</span><span class="pln">partials</span></code></pre>
+
+<p>在app.js中加入</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> partials </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;express-partials&#39;</span><span class="pun">);</span></code></pre>
+
+<p>在app.configure()之中加入如下设置</p>
+
+<pre class="prettyprint"><code><span class="pln">app</span><span class="pun">.</span><span class="kwd">set</span><span class="pun">(</span><span class="str">&#39;view engine&#39;</span><span class="pun">,</span><span class="pln"> </span><span class="str">&#39;ejs&#39;</span><span class="pun">);</span><span class="pln">
+app</span><span class="pun">.</span><span class="kwd">use</span><span class="pun">(</span><span class="pln">partials</span><span class="pun">());</span><span class="pln"> </span></code></pre>
+
+<p>然后再在views目录中新建一个layout.ejs文件，然后就可以使用了。</p>
+</div>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
 
 
   <article class="post">
@@ -240,6 +289,8 @@
   
     <li><a href="/tags/appfog/">appfog</a><small>1</small></li>
   
+    <li><a href="/tags/node/">node</a><small>1</small></li>
+  
   </ul>
 </div>
 
@@ -250,7 +301,7 @@
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2013 John Doe
+  &copy; 2013 mac
   
 </div>
 <div class="clearfix"></div></footer>

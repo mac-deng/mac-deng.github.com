@@ -10,11 +10,10 @@
   padding: 0;
 }
 body {
-  background: #eee;
+  background: url("http://socket.io/images/pattern.png");
   color: #444;
-  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-family: "微软雅黑", "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-size: 14px;
-  text-shadow: 0 0 1px transparent;
 }
 @media screen and (max-width: 1260px) {
   body {
@@ -45,7 +44,7 @@ h3 {
 }
 a {
   text-decoration: none;
-  color: #258fb8;
+  color: #113c73;
 }
 a:hover {
   text-decoration: underline;
@@ -102,14 +101,13 @@ a:hover {
   }
 }
 #header {
-  text-shadow: 0 0 1px #fff;
   margin: 50px auto;
 }
 #header a {
-  color: #999;
+  color: #fff;
 }
 #header a:hover {
-  color: #258fb8;
+  color: #113c73;
   text-decoration: none;
 }
 #header h1 {
@@ -135,8 +133,8 @@ a:hover {
   margin-left: 30px;
 }
 article {
-  -webkit-box-shadow: 1px 2px 3px #ddd;
-  box-shadow: 1px 2px 3px #ddd;
+  -webkit-box-shadow: 2px 3px 10px #3e4001;
+  box-shadow: 2px 3px 10px #3e4001;
   background: #fff;
 }
 article.page {
@@ -156,7 +154,7 @@ article.link .icon:before {
 }
 article.link .title a:after {
   content: '\f08e';
-  color: #999;
+  color: #272401;
   font: 12px FontAwesome;
   padding-left: 10px;
   vertical-align: super;
@@ -215,7 +213,6 @@ article .gallery .next:before {
   font: 24px/1 FontAwesome;
   text-align: center;
   width: 24px;
-  text-shadow: 0 0 15px rgba(0,0,0,0.5);
   color: #fff;
   margin-top: -12px;
   top: 50%;
@@ -241,7 +238,7 @@ article header .icon {
   position: absolute;
   top: 20px;
   left: 20px;
-  color: #258fb8;
+  color: #113c73;
 }
 @media screen and (max-width: 600px) {
   article header .icon {
@@ -257,7 +254,7 @@ article header .icon:before {
   text-align: center;
 }
 article header time {
-  color: #999;
+  color: #272401;
   font: 0.9em "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
   margin-bottom: 5px;
   display: block;
@@ -270,7 +267,7 @@ article header .title a {
   color: #444;
 }
 article header .title a:hover {
-  color: #258fb8;
+  color: #113c73;
   text-decoration: none;
 }
 article .entry {
@@ -318,6 +315,7 @@ article .entry pre {
 }
 article .entry code {
   background: #eee;
+  background: rgba(238,238,238,0.3);
   color: #666;
   padding: 0 5px;
   margin: 0 2px;
@@ -328,6 +326,7 @@ article .entry code {
 }
 article .entry pre {
   background: #eee;
+  background: rgba(238,238,238,0.3);
   border: 1px solid #ddd;
   margin-top: 15px;
   overflow: auto;
@@ -384,7 +383,7 @@ article .entry iframe {
 article .entry .caption {
   display: block;
   margin-top: 5px;
-  color: #999;
+  color: #272401;
   position: relative;
   font-size: 0.9em;
   padding-left: 25px;
@@ -427,17 +426,17 @@ article footer {
   margin-top: 15px;
   padding-top: 10px;
   border-top: 1px solid #ddd;
-  color: #999;
+  color: #272401;
   font-size: 0.9em;
   line-height: 16px;
   position: relative;
   min-height: 16px;
 }
 article footer a {
-  color: #999;
+  color: #272401;
 }
 article footer a:hover {
-  color: #258fb8;
+  color: #113c73;
   text-decoration: none;
 }
 article footer a:before {
@@ -481,8 +480,8 @@ article footer .addthis iframe {
 #comment {
   padding: 20px;
   background: #fff;
-  -webkit-box-shadow: 1px 2px 3px #ddd;
-  box-shadow: 1px 2px 3px #ddd;
+  -webkit-box-shadow: 2px 3px 10px #3e4001;
+  box-shadow: 2px 3px 10px #3e4001;
   margin-bottom: 50px;
 }
 #comment .title {
@@ -493,13 +492,12 @@ article footer .addthis iframe {
   display: block;
   padding: 5px 10px;
   background: #ddd;
-  color: #999;
+  color: #272401;
   font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
-  text-shadow: 0 0 1px #fff;
   margin-bottom: 50px;
 }
 #pagination a:hover {
-  background: #258fb8;
+  background: #113c73;
   color: #fff;
   text-decoration: none;
   text-shadow: none;
@@ -515,10 +513,9 @@ article footer .addthis iframe {
   font-family: FontAwesome;
 }
 .archive-title {
-  color: #999;
+  color: #fff;
   font-weight: normal;
   margin-bottom: 30px;
-  text-shadow: 0 0 1px #fff;
 }
 .archive-title:before {
   font-family: FontAwesome;
@@ -556,8 +553,8 @@ article footer .addthis iframe {
 }
 #sidebar .widget {
   background: #fff;
-  -webkit-box-shadow: 1px 2px 3px #ddd;
-  box-shadow: 1px 2px 3px #ddd;
+  -webkit-box-shadow: 2px 3px 10px #3e4001;
+  box-shadow: 2px 3px 10px #3e4001;
   margin-bottom: 30px;
   break-word: nowrap;
 }
@@ -590,6 +587,8 @@ article footer .addthis iframe {
 }
 #sidebar .search {
   margin-bottom: 30px;
+  -webkit-box-shadow: 2px 3px 10px #3e4001;
+  box-shadow: 2px 3px 10px #3e4001;
 }
 #sidebar .search input {
   background: #fff;
@@ -602,14 +601,14 @@ article footer .addthis iframe {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  color: #999;
+  color: #272401;
 }
 #sidebar .search input:focus {
   color: #444;
 }
 #sidebar .tag small {
   margin-left: 15px;
-  color: #999;
+  color: #272401;
 }
 #sidebar .tag small:before {
   content: '(';
@@ -628,7 +627,7 @@ article footer .addthis iframe {
 #sidebar .twitter small {
   display: block;
   margin-top: 10px;
-  color: #999;
+  color: #272401;
   line-height: 1;
 }
 #sidebar .tagcloud .entry {
@@ -638,10 +637,9 @@ article footer .addthis iframe {
   margin-right: 10px;
 }
 #footer {
-  color: #999;
+  color: #272401;
   margin-bottom: 50px;
   font: 0.9em/1.6 "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
-  text-shadow: 0 0 1px #fff;
 }
 .entry .gist {
   background: #eee;
@@ -671,17 +669,17 @@ article footer .addthis iframe {
 }
 .entry .gist .gist-file .gist-meta {
   background: none;
-  color: #999;
+  color: #272401;
   margin-top: 5px;
   padding: 0;
   text-shadow: 0 0 1px #fff;
   font-size: 100%;
 }
 .entry .gist .gist-file .gist-meta a {
-  color: #258fb8;
+  color: #113c73;
 }
 .entry .gist .gist-file .gist-meta a:visited {
-  color: #258fb8;
+  color: #113c73;
 }
 figure.highlight {
   background: #eee;
@@ -696,7 +694,7 @@ figure.highlight {
   position: relative;
 }
 figure.highlight figcaption {
-  color: #999;
+  color: #272401;
   font-size: 0.9em;
   margin-bottom: 5px;
   text-shadow: 0 0 1px #fff;
@@ -715,7 +713,7 @@ figure.highlight table {
   border-spacing: 0;
 }
 figure.highlight .gutter {
-  color: #999;
+  color: #272401;
   padding-right: 15px;
   border-right: 1px solid #ddd;
   text-align: right;

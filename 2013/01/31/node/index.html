@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   
-  <title>not comment | mac's blog</title>
-  <meta name="author" content="mac deng">
+  <title>node | mac's blog</title>
+  <meta name="author" content="mac">
   
-  <meta name="description" content="some experience">
+  <meta name="description" content="some Experience">
   
   
   <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 
-  <meta property="og:title" content="not comment"/>
+  <meta property="og:title" content="node"/>
   <meta property="og:site_name" content="mac's blog"/>
 
   <link rel="alternate" href="/atom.xml" title="mac's blog" type="application/atom+xml">
@@ -24,7 +24,7 @@
 <body>
   <header id="header" class="inner"><div class="alignleft">
   <h1><a href="/">mac's blog</a></h1>
-  <h2><a href="/">share experience</a></h2>
+  <h2><a href="/">share Experience</a></h2>
 </div>
 <nav id="main-nav" class="alignright">
   <ul>
@@ -46,23 +46,46 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-01-31T06:06:14.000Z"><a href="/2013/01/31/not-comment/">Jan 31 2013</a></time>
+        <time datetime="2013-01-31T08:59:12.000Z"><a href="/2013/01/31/node/">Jan 31 2013</a></time>
       
       
   
-    <h1 class="title">not comment</h1>
+    <h1 class="title">node</h1>
   
 
     </header>
     <div class="entry">
       
-        
+        <p><h3>关于express 3+中ejs模板的问题</h3> 
+</p>
+<div class="sep10"></div> 
+<div class="topic_content">
+<p>这个问题的主要原因是express3+中取消了ejs默认的模范如果需要使用需要如下操作：<br>安装</p>
+
+<pre class="prettyprint"><code><span class="pln">npm intall express</span><span class="pun">-</span><span class="pln">partials</span></code></pre>
+
+<p>在app.js中加入</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> partials </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;express-partials&#39;</span><span class="pun">);</span></code></pre>
+
+<p>在app.configure()之中加入如下设置</p>
+
+<pre class="prettyprint"><code><span class="pln">app</span><span class="pun">.</span><span class="kwd">set</span><span class="pun">(</span><span class="str">&#39;view engine&#39;</span><span class="pun">,</span><span class="pln"> </span><span class="str">&#39;ejs&#39;</span><span class="pun">);</span><span class="pln">
+app</span><span class="pun">.</span><span class="kwd">use</span><span class="pun">(</span><span class="pln">partials</span><span class="pun">());</span><span class="pln"> </span></code></pre>
+
+<p>然后再在views目录中新建一个layout.ejs文件，然后就可以使用了。</p>
+</div>
       
     </div>
     <footer>
       
         
         
+  
+  <div class="tags">
+    <a href="/tags/node/">node</a>
+  </div>
+
         
   <div class="addthis addthis_toolbox addthis_default_style">
     
@@ -98,6 +121,17 @@
 
 
 
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/appfog/">appfog</a><small>1</small></li>
+  
+    <li><a href="/tags/node/">node</a><small>1</small></li>
+  
+  </ul>
+</div>
+
 
 
 </aside>
@@ -105,7 +139,7 @@
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2013 mac deng
+  &copy; 2013 mac
   
 </div>
 <div class="clearfix"></div></footer>
