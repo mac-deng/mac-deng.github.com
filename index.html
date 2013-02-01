@@ -96,7 +96,7 @@
 “dewey”是用户名，“tehrock”是密码。
 
 </p>
-<p>本教程的其余部分将显示蒙戈的命令及其等价物在Mongoskin。如果你不知道的MongoDB的基本知识，你可能会发现很难仿效，所以一定要确保你已经通过MongoDB[<a href="http://www.hacksparrow.com/the-mongodb-tutorial.html]的教程。">http://www.hacksparrow.com/the-mongodb-tutorial.html]的教程。</a>
+<p>本教程的其余部分将显示蒙戈的命令及其等价物在Mongoskin。如果你不知道的MongoDB的基本知识，你可能会发现很难仿效，所以一定要确保你已经通过<a href="http://www.hacksparrow.com/the-mongodb-tutorial.html"> MongoDB </a>的教程。
 
 </p>
 <p>查看一个集合中现有数据
@@ -105,7 +105,7 @@
 在Mongoskin中，是这样的：
 </p>
 <p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).find().toArray(<span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    console.log(result);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-我们使用的toArray()函数来转换的Mongoskin[<a href="https://github.com/guileen/node-mongoskin#skincursor]对开发人员友好的阵列。">https://github.com/guileen/node-mongoskin#skincursor]对开发人员友好的阵列。</a>
+我们使用的toArray()函数来转换的<a href="https://github.com/guileen/node-mongoskin#skincursor"> Mongoskin </a>对开发人员友好的阵列。
 那么，有什么不用toArray()的方法吗？在这里，它是：
 </p>
 <p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).find({}, <span class="keyword">function</span>(err, result) {</div><div class="line">    result.each(<span class="keyword">function</span>(err, band) {</div><div class="line">        console.log(band);</div><div class="line">    });</div><div class="line">});</div></code></pre></td></tr></table></figure>
