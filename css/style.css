@@ -134,11 +134,15 @@ a:hover {
 article {
   -webkit-box-shadow: 2px 3px 10px #3e4001;
   box-shadow: 2px 3px 10px #3e4001;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   background: #fff;
 }
+article border-ra,
 article.page {
   padding-left: 20px;
 }
+article border-ra .icon,
 article.page .icon {
   display: none;
 }
@@ -482,6 +486,8 @@ article footer .addthis iframe {
   -webkit-box-shadow: 2px 3px 10px #3e4001;
   box-shadow: 2px 3px 10px #3e4001;
   margin-bottom: 50px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
 }
 #comment .title {
   font-weight: normal;
@@ -556,6 +562,8 @@ article footer .addthis iframe {
   box-shadow: 2px 3px 10px #3e4001;
   margin-bottom: 30px;
   break-word: nowrap;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
 }
 #sidebar .widget .title {
   padding: 15px 20px;
@@ -590,6 +598,8 @@ article footer .addthis iframe {
   box-shadow: 2px 3px 10px #3e4001;
 }
 #sidebar .search input {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   background: #fff;
   font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
   font-style: italic;

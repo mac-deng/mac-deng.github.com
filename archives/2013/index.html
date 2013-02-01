@@ -63,6 +63,121 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-02-01T06:51:46.000Z"><a href="/2013/02/01/mongoskin-api/">Feb 1 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/02/01/mongoskin-api/">mongoskin与实例教程</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>如果你不熟悉使用MongoDB，我会强烈建议您先通过这个MongoDB的教程，让你知道的基本知识MongoDB的，从Mongoskin能得到什么。
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install mongoskin</div></code></pre></td></tr></table></figure>
+当您安装Mongoskin，您可能会看到此消息：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">To install <span class="keyword">with</span> C++ bson parser <span class="keyword">do</span> &lt;npm install mongodb --mongodb:native&gt;</div></code></pre></td></tr></table></figure>
+不要过分担心。C + +的BSON解析器现在实际上是不赞成使用的JavaScript分析器有了很大的提高。只要忽略该消息。
+
+</p>
+<p>下面是一个例子
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div></code></pre></td><td class="code"><pre><code><div class="line">$ mongo</div><div class="line">&gt; use rockband</div><div class="line">&gt; db.bands.insert({name: <span class="string">'Hollywood Rose'</span>, members: [<span class="string">'Axl Rose'</span>, <span class="string">'Izzy Stradlin'</span>, <span class="string">'Chris Weber'</span>], year: <span class="number">1984</span>})</div><div class="line">&gt; db.bands.insert({name: <span class="string">'Road Crew'</span>, members: [<span class="string">'Slash'</span>, <span class="string">'Steven Adler'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">1984</span>})</div><div class="line">&gt; db.bands.insert({name: <span class="string">'L.A. Guns'</span>, members: [<span class="string">'Tracy Guns'</span>, <span class="string">'Paul Black'</span>, <span class="string">'Mick Cripps'</span>, <span class="string">'Nickey Alexander'</span>], year: <span class="number">1985</span>})</div><div class="line">&gt; db.bands.insert({name: <span class="string">"Velvet Revolver"</span>, members: [<span class="string">'Scott Weiland'</span>, <span class="string">'Slash'</span>, <span class="string">'Dave Kushner'</span>, <span class="string">'Matt Sorum'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">2002</span>})</div></code></pre></td></tr></table></figure>
+我们在rockband数据库创建了4个数据。
+
+</p>
+<p>现在是时候引入 mongokin 脚本了，你这样做。
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> db = require(<span class="string">'mongoskin'</span>).db(<span class="string">'localhost:27017/rockband'</span>); </div></code></pre></td></tr></table></figure>
+这将创建一个实例连接到MongoDB的，默认情况下它连接到数据库rockband的。我命名实例的数据库，从而保持一致MongoDB的命令行的数据库对象。今后所有的数据库实例的实例，我们就创建了一个参考。
+
+</p>
+<p>现在，如果你需要进行身份验证连接到数据库呢？身份验证使用Mongoskin是很容易的，只包括认证creds在这样的实例代码：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> db = require(<span class="string">'mongoskin'</span>).db(<span class="string">'dewey:tehrock@localhost:27017/rockband'</span>);</div></code></pre></td></tr></table></figure>
+“dewey”是用户名，“tehrock”是密码。
+
+</p>
+<p>本教程的其余部分将显示蒙戈的命令及其等价物在Mongoskin。如果你不知道的MongoDB的基本知识，你可能会发现很难仿效，所以一定要确保你已经通过MongoDB[<a href="http://www.hacksparrow.com/the-mongodb-tutorial.html]的教程。">http://www.hacksparrow.com/the-mongodb-tutorial.html]的教程。</a>
+
+</p>
+<p>查看一个集合中现有数据
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">db.bands.find()</div></code></pre></td></tr></table></figure>
+在Mongoskin中，是这样的：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).find().toArray(<span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    console.log(result);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+我们使用的toArray()函数来转换的Mongoskin[<a href="https://github.com/guileen/node-mongoskin#skincursor]对开发人员友好的阵列。">https://github.com/guileen/node-mongoskin#skincursor]对开发人员友好的阵列。</a>
+那么，有什么不用toArray()的方法吗？在这里，它是：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).find({}, <span class="keyword">function</span>(err, result) {</div><div class="line">    result.each(<span class="keyword">function</span>(err, band) {</div><div class="line">        console.log(band);</div><div class="line">    });</div><div class="line">});</div></code></pre></td></tr></table></figure>
+从集合中查找一个列表
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.findOne()</div></code></pre></td></tr></table></figure>
+在mongiskin里是这样的：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).findOne(<span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    console.log(result);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+注意：我们不转换上面的列阵，因为结果只有一个。
+现在，让我们添加另一个文档的集合：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.insert({name: <span class="string">"Guns N' Roses"</span>, members: [<span class="string">'Axl Rose'</span>, <span class="string">'Slash'</span>, <span class="string">'Izzy Stradlin'</span>, <span class="string">'Matt Sorum'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">1986</span>});</div></code></pre></td></tr></table></figure>
+同样在mongoskin中：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).insert({name: <span class="string">"Guns N' Roses"</span>, members: [<span class="string">'Axl Rose'</span>, <span class="string">'Slash'</span>, <span class="string">'Izzy Stradlin'</span>, <span class="string">'Matt Sorum'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">1986</span>}, <span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    <span class="keyword">if</span> (result) console.log(<span class="string">'Added!'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+我需要更换成员Matt Sorum与 Steven Adler。mongodb是这么做的：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$pull'</span>:{members:<span class="string">'Matt Sorum'</span>}})</div><div class="line">&gt; db.bands.update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$push'</span>:{members:<span class="string">'Steven Adler'</span>}})</div></code></pre></td></tr></table></figure>
+在Mongoskin中：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$pull'</span>:{members:<span class="string">'Matt Sorum'</span>}}, <span class="keyword">function</span>(err) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    db.collection(<span class="string">'bands'</span>).update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$push'</span>:{members:<span class="string">'Steven Adler'</span>}}, <span class="keyword">function</span>(err) {</div><div class="line">        <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">        console.log(<span class="string">'Updated!'</span>);</div><div class="line">    });</div><div class="line">});</div></code></pre></td></tr></table></figure>
+现在，让我们在Mongoskin中做一些有条件的选择。
+提示：db.collection（&quot;hands&quot;）可以存储在一个变量命名hands中，使我们的Mongoskin代码更精简，让我们这样做：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> bands = db.collection(<span class="string">'bands'</span>);</div></code></pre></td></tr></table></figure>
+现在在collection中使用count()函数。
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.count()</div><div class="line">&gt; db.bands.count({year:{$gte:<span class="number">1985</span>}})</div></code></pre></td></tr></table></figure>
+在mongoskin：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div></code></pre></td><td class="code"><pre><code><div class="line">bands.count(<span class="keyword">function</span>(err, count) {</div><div class="line">    console.log(<span class="string">'There are '</span> + count + <span class="string">' bands in the database'</span>);</div><div class="line">});</div><br><div class="line">bands.count({year:{$gte:<span class="number">1985</span>}}, <span class="keyword">function</span>(err, count) {</div><div class="line">    console.log(count + <span class="string">' bands were formed in 1985 or later'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+这里会查找year大于等于1985数据的数量。
+现在，让我们尝试更新文件：
+mongo shell： 
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.update({name:<span class="string">'Hollywood Rose'</span>}, {$set:{year:<span class="number">1983</span>}})</div></code></pre></td></tr></table></figure>
+mongoskin:
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div></code></pre></td><td class="code"><pre><code><div class="line">bands.update({name:<span class="string">'Hollywood Rose'</span>}, {$set:{year:<span class="number">2000</span>}}, <span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (!err) console.log(<span class="string">'Year updated!'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+删除一个记录，mongo shell：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.remove({name:<span class="string">'Velvet Revolver'</span>})</div></code></pre></td></tr></table></figure>
+mongoskin：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).remove({name:<span class="string">'Velvet Revolver'</span>}, <span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (!err) console.log(<span class="string">'VR deleted!'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+在学习mongokin的过程中整理了这个教程。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-01-31T09:30:54.000Z"><a href="/2013/01/31/editor/">Jan 31 2013</a></time>
       
       
@@ -345,6 +460,8 @@
   <ul class="entry">
   
     <li><a href="/tags/appfog/">appfog</a><small>1</small></li>
+  
+    <li><a href="/tags/mongodb/">mongodb</a><small>1</small></li>
   
     <li><a href="/tags/node/">node</a><small>1</small></li>
   
