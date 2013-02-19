@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>关于express 3+中ejs模板的问题 | mac's blog</title>
+  <title>nodeJS 工具集 | mac's blog</title>
   <meta name="author" content="mac">
   
   <meta name="description" content="some Experience">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 
-  <meta property="og:title" content="关于express 3+中ejs模板的问题"/>
+  <meta property="og:title" content="nodeJS 工具集"/>
   <meta property="og:site_name" content="mac's blog"/>
 
   <link rel="alternate" href="/atom.xml" title="mac's blog" type="application/atom+xml">
@@ -58,28 +58,19 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-01-31T08:59:12.000Z"><a href="/2013/01/31/node/">Jan 31 2013</a></time>
+        <time datetime="2013-02-18T08:09:58.000Z"><a href="/2013/02/18/node-util/">Feb 18 2013</a></time>
       
       
   
-    <h1 class="title">关于express 3+中ejs模板的问题</h1>
+    <h1 class="title">nodeJS 工具集</h1>
   
 
     </header>
     <div class="entry">
       
-        <div class="sep10"></div> 
-<div class="topic_content">
-<p>这个问题的主要原因是express3+中取消了ejs默认的模范如果需要使用需要如下操作：<br>安装</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="title">npm</span> intall express-partials</div></code></pre></td></tr></table></figure>
-<p>在app.js中加入</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> partials = <span class="keyword">require</span>(<span class="string">'express-partials'</span>);</div></code></pre></td></tr></table></figure>
-
-<p>在app.configure()之中加入如下设置</p>
-
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">app.set(<span class="attribute">'view</span> engine', <span class="attribute">'ejs</span>');</div><div class="line">app.<span class="keyword">use</span>(partials()); </div></code></pre></td></tr></table></figure>
-<p>然后再在views目录中新建一个layout.ejs文件，然后就可以使用了。</p>
-</div>
+        <p>js压缩工具<a href="https://github.com/mishoo/UglifyJS"> UglifyJS  </a></p>
+<p>css压缩工具<a href="https://github.com/GoalSmashers/clean-css"> clean-css  </a> </p>
+<p>图片压缩工具<a href="https://github.com/colorhook/node-smushit">node-smushit</a> </p>
       
     </div>
     <footer>
