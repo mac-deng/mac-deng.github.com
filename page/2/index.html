@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>mongodb | mac's blog</title>
+  <title>Page 2 | mac's blog</title>
   <meta name="author" content="mac">
   
   <meta name="description" content="some Experience">
@@ -53,11 +53,130 @@
     <div id="main-col" class="alignleft"><div id="wrapper">
 
 
-<h2 class="archive-title tag">mongodb</h2>
-
-
+  <article class="post">
   
-    <article class="post">
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-02-18T03:08:53.000Z"><a href="/2013/02/18/grunt/">Feb 18 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/02/18/grunt/">grunt 上手（一）</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://www.gruntjs.com">grunt</a> 是一个基于任务的 JavaScript 项目命令行构建工具。
+它有一系列的插件工具能够根据需求、功能划分模块，如何将代码分成多个文件开发，合成一个发布；
+
+</p>
+<p>让我们开始安装grunt。
+
+</p>
+<p>首先需要<a href="http://nodejs.org/">Nodejs</a>环境，这里假设你已经安装好了<a href="http://nodejs.org/">Nodejs</a>和<a href="https://npmjs.org/">NPM</a>，然后安装grunt
+
+</p>
+<p>如果您以前在全局安装过grunt你需要先删除老的grunt。
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm uninstall -g grunt</div></code></pre></td></tr></table></figure>
+
+<p>然后安装在全局安装cli
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install -g grunt-cli</div></code></pre></td></tr></table></figure>
+
+<p>这时候你需要一个Gruntfile.js和package.json文件就可以使grunt简单的工作了。
+</p>
+<p><p>1.将路径切换到项目下。</p>
+</p>
+<p><p>2.安装项目所依赖的模块</p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install</div></code></pre></td></tr></table></figure>
+
+</p>
+<p>3.运行<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt</div></code></pre></td></tr></table></figure>
+
+</p>
+<p>下面让我们安装<a href="https://github.com/gruntjs/grunt-contrib-cssmin">grunt-contrib-cssmin</a>插件
+在项目目录下安装<a href="https://github.com/gruntjs/grunt-contrib-cssmin">grunt-contrib-cssmin</a>
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install grunt-contrib-cssmin --save-dev</div></code></pre></td></tr></table></figure>
+
+<p>然后在项目下Gruntfile.js里添加
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt.initConfig({</div><div class="line">    cssmin: {</div><div class="line">      compress: {</div><div class="line">        files: {</div><div class="line">          <span class="string">"dist/output.css"</span>: [<span class="string">"test/input.css"</span>, <span class="string">"test/input1.css"</span>]</div><div class="line">        }</div><div class="line">      }</div><div class="line">    }</div><div class="line">  });</div><br><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</div><br><div class="line">  grunt.registerTask(<span class="string">'css'</span>, [<span class="string">'cssmin'</span>]);</div><br></code></pre></td></tr></table></figure>
+
+<p>代表要使用这个插件
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</div></code></pre></td></tr></table></figure>
+
+<p>代表给grunt注册一个css任务来执行cssmin
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">  grunt.registerTask(<span class="string">'css'</span>, [<span class="string">'cssmin'</span>]);</div></code></pre></td></tr></table></figure>
+
+<p>然后可以通过<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt css</div></code></pre></td></tr></table></figure>
+
+</p>
+<p>来运行
+
+</p>
+<p>如果写成<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'cssmin'</span>]);</div></code></pre></td></tr></table></figure>
+
+</p>
+<p>则可以直接使用<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt </div></code></pre></td></tr></table></figure>
+
+</p>
+<p>来运行，将test文件夹的input.css和input1.css合并压缩到dist文件夹output.css。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-02-08T04:26:05.000Z"><a href="/2013/02/08/node-uuid/">Feb 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/02/08/node-uuid/">分享一段用生成uuid的代码</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div></code></pre></td><td class="code"><pre><code><div class="line">	<span class="function"><span class="keyword">function</span> <span class="title">uuid</span><span class="params">()</span> {</span></div><div class="line">	    <span class="comment">// http://www.ietf.org/rfc/rfc4122.txt</span></div><div class="line">	    <span class="keyword">var</span> s = [];</div><div class="line">	    <span class="keyword">var</span> hexDigits = <span class="string">"0123456789abcdef"</span>;</div><div class="line">	    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">36</span>; i++) {</div><div class="line">	        s[i] = hexDigits.substr(Math.floor(Math.random() * <span class="number">0x10</span>), <span class="number">1</span>);</div><div class="line">	    }</div><div class="line">	    s[<span class="number">14</span>] = <span class="string">"4"</span>;  <span class="comment">// bits 12-15 of the time_hi_and_version field to 0010</span></div><div class="line">	    s[<span class="number">19</span>] = hexDigits.substr((s[<span class="number">19</span>] &amp; <span class="number">0x3</span>) | <span class="number">0x8</span>, <span class="number">1</span>);  <span class="comment">// bits 6-7 of the clock_seq_hi_and_reserved to 01</span></div><div class="line">	    s[<span class="number">8</span>] = s[<span class="number">13</span>] = s[<span class="number">18</span>] = s[<span class="number">23</span>] = <span class="string">"-"</span>;</div><br><div class="line">	    <span class="keyword">var</span> uuid = s.join(<span class="string">""</span>);</div><div class="line">	    <span class="keyword">return</span> uuid;</div><div class="line">	}</div></code></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
   
   <div class="post-content">
     <header>
@@ -171,14 +290,17 @@ mongoskin：
 </article>
 
 
-  
 
-  <nav id="pagination">
+
+<nav id="pagination">
   
+    <a href="/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/page/3/" class="alignright next">Next</a>
   
   <div class="clearfix"></div>
-</nav>
-</div></div>
+</nav></div></div>
     <aside id="sidebar" class="alignright">
 <div class="search">
   <form action="http://google.com/search" method="get" accept-charset="utf-8">

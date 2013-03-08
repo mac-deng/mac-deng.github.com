@@ -63,6 +63,160 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-03-08T02:13:57.000Z"><a href="/2013/03/08/node-ccap/">Mar 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/03/08/node-ccap/">【转】node-ccap模块生成captcha验证码</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div class="sep10"></div> 
+      <div class="topic_content">
+        <p>用node做web开发很多都可能碰到需要验证码的地方，之前在github上搜索，有一些比如node-captcha等的类库，都需要依赖第三方的图形处理库或者软件，像我之前安装cario这个图形库时，真是费了好大一番劲，但是其实我们只用到了这些图形库的一点点小功能，比如图片的尺寸修改裁剪，或者生产验证码。</p>
+
+<p>先介绍一下CImg这个c++的图形库吧，CImg是一个跨平台的C++的图像处理库，提供了加载、处理、显示、保存等一系列功能，最吸引人的地方是整个图形库就一个CImg.h这个文件，所以非常的便携绿色环保，带到哪里都可以进行编译使用，不用安装一大推依赖。于是我就想利用这个CImg图形库做一个简单的demo，就从实现验证码这个功能入手，当然可以完全利用这个库来做裁剪图片等其他功能。</p>
+
+<p>ccap模块是基于CImg图形库的封装，让它可以供node使用，由于CImg图形库的便携性，所以ccap模块可以完全不依赖其他任何第三方图形库或者软件而独立工作，也就说如果只是想要生成简单的验证码，只要require这个ccap模块即可。</p>
+
+<p>生成的图片示例：</p>
+
+<p><a class="content_img" href="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499209454_QQ%E6%88%AA%E5%9B%BE20130118165250.jpg"><img src="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499209454_QQ%E6%88%AA%E5%9B%BE20130118165250.jpg" alt="enter image description here" title=""></a></p>
+
+<p>1、安装：<br>通用方法：npm install ccap<br>或者通过github下载，地址：<a href="https://github.com/DoubleSpout/ccap" target="_blank"></a><a href="https://github.com/DoubleSpout/ccap" target="_blank"><a href="https://github.com/DoubleSpout/ccap&lt;/a&gt;&lt;br&gt;博客地址：&lt;a">https://github.com/DoubleSpout/ccap&lt;/a&gt;&lt;br&gt;博客地址：&lt;a</a> href=&quot;<a href="http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/">http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/</a>&quot; target=&quot;_blank&quot;&gt;</a><a href="http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/" target="_blank"><a href="http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/&lt;/a&gt;&lt;/p&gt;">http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/&lt;/a&gt;&lt;/p&gt;</a>
+
+<p>2、性能：<br>在2cpu的linux 64位服务器上生成验证码速度可以达到1200次/秒，测试生成的图片是BMP的，jpeg的图片验证码生成速度大约在600次/秒。</p>
+
+<p>3、声明方法：</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> ccap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;ccap&#39;</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha1 </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">();</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha2 </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">(</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> height</span><span class="pun">,</span><span class="pln"> offset</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha3 </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">({</span><span class="pln">
+
+    width</span><span class="pun">:</span><span class="lit">256</span><span class="pun">,</span><span class="com">//set width,default is 256</span><span class="pln">
+
+    height</span><span class="pun">:</span><span class="lit">60</span><span class="pun">,</span><span class="com">//set height,default is 60</span><span class="pln">
+
+    offset</span><span class="pun">:</span><span class="lit">40</span><span class="pun">,</span><span class="com">//set text spacing,default is 40</span><span class="pln">
+
+    quality</span><span class="pun">:</span><span class="lit">100</span><span class="pun">,</span><span class="com">//set pic quality,default is 50</span><span class="pln">
+
+    generate</span><span class="pun">:</span><span class="kwd">function</span><span class="pun">(){</span><span class="com">//Custom the function to generate captcha text</span><span class="pln">
+
+         </span><span class="com">//generate captcha text here</span><span class="pln">
+
+         </span><span class="kwd">return</span><span class="pln"> text</span><span class="pun">;</span><span class="com">//return the captcha text</span><span class="pln">
+
+    </span><span class="pun">}</span><span class="pln">
+
+</span><span class="pun">});</span></code></pre>
+
+<p>可以通过上述代码实例化一个ccap类。<br>1、不传任何参数，全部使用默认的参数进行生成验证码<br>2、只传递宽，高，偏移进行实例化，调整图片的大小，和图片中文字的间隔<br>3、传递一个对象，除了宽，高和偏移，还传递了图片质量以及生成随机数的方法，ccap模块会根据自定义函数return的字符串作为图片验证码的内容，默认是0-9，A-Z的6位随即字符串。</p>
+
+<p>理论上可以生产很多不同的ccap的实例，而且他们之间互相没有影响，所以即使是通过cluster开启多进程的node同时生产验证码也不存在互相锁止的影响。</p>
+
+<p>对于图片质量只对jpeg图片有效，如果没有安装任何jpeg的lib库的话，只能使用bmp未压缩图形了，体积比较大，但是生成速度比较快。</p>
+
+<p>4、使用方法，get()：</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> ccap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;ccap&#39;</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">();</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> ary </span><span class="pun">=</span><span class="pln"> captcha</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">();</span><span class="com">//ary[0] is captcha&#39;s text,ary[1] is captcha picture buffer.</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> text </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> buffer </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">1</span><span class="pun">];</span></code></pre>
+
+<p>实例化ccap类之后，会得到captcha对象，这个对象只有一个对外方法，get()，这个方法每次调用都会返回验证码buffer和对应的text字符串内容，保存在数组里，类似这样的结构：</p>
+
+<pre class="prettyprint"><code><span class="pun">[</span><span class="str">&quot;captcha text&quot;</span><span class="pun">,</span><span class="str">&quot;picture buffer&quot;</span><span class="pun">]</span></code></pre>
+
+<p>5、一个简单的web例子：</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> http </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;http&#39;</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> ccap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;ccap&#39;</span><span class="pun">)();</span><span class="com">//Instantiated ccap class </span><span class="pln">
+
+http</span><span class="pun">.</span><span class="pln">createServer</span><span class="pun">(</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="pln">request</span><span class="pun">,</span><span class="pln"> response</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">request</span><span class="pun">.</span><span class="pln">url </span><span class="pun">==</span><span class="pln"> </span><span class="str">&#39;/favicon.ico&#39;</span><span class="pun">)</span><span class="kwd">return</span><span class="pln"> response</span><span class="pun">.</span><span class="kwd">end</span><span class="pun">(</span><span class="str">&#39;&#39;</span><span class="pun">);</span><span class="com">//Intercept request favicon.ico</span><span class="pln">
+
+    </span><span class="kwd">var</span><span class="pln"> ary </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">();</span><span class="pln">
+
+    </span><span class="kwd">var</span><span class="pln"> txt </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+
+    </span><span class="kwd">var</span><span class="pln"> buf </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">1</span><span class="pun">];</span><span class="pln">
+
+    response</span><span class="pun">.</span><span class="kwd">end</span><span class="pun">(</span><span class="pln">buf</span><span class="pun">);</span><span class="pln">
+
+    console</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="pln">txt</span><span class="pun">);</span><span class="pln">
+
+</span><span class="pun">}).</span><span class="pln">listen</span><span class="pun">(</span><span class="lit">8124</span><span class="pun">);</span><span class="pln">
+
+console</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="str">&#39;Server running at </span><a href="http://127.0.0.1:8124/" target="_blank"><span class="str"><a href="http://127.0.0.1:8124/&lt;/span&gt;&lt;/a&gt;&lt;span">http://127.0.0.1:8124/&lt;/span&gt;&lt;/a&gt;&lt;span</a> class=&quot;str&quot;&gt;&#39;</span><span class="pun">);</span></code></pre>
+
+<p>上面这个例子会将验证码返回给客户端，并且把对应的验证码的文字输出出来，同时拦截了favicon.ico的请求。</p>
+
+<p>结果如下图：</p>
+
+<p><a class="content_img" href="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499487579_QQ%E6%88%AA%E5%9B%BE20130118165739.jpg"><img src="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499487579_QQ%E6%88%AA%E5%9B%BE20130118165739.jpg" alt="enter image description here" title=""></a></p>
+
+<p>有兴趣的TX可以下载下来试试，如果安装有jpeg库的话，可以把根目录下的binding.jpeg.gyp覆盖改名为binding.gyp然后rebuild就可以使用jpeg图片作为验证码了，体积会小很多。另外ccap模块做了一些缓存的机制，尽量发挥更好的性能。</p>
+
+<p>目前ccap已经对linux系统支持jpeg验证码，体积从45kb直降到6kb，欢迎下载试用，有任何问题请留言<br><a href="http://cnodejs.org/topic/50f90d8edf9e9fcc58a5ee0b" target="_blank">ccap使用libjpeg库</a></p>
+      </div>
+      <div class="sep10"></div> 
+
+<pre><code><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"col_fade"</span>&gt;</span>标签：<span class="tag">&lt;/<span class="title">span</span>&gt;</span> </div></code></pre>
+<p><span class="tag_in_topic" tag_id="4f17897cd48ce1f82c0023aa">
+    <a href="/tag/入门教程">入门教程</a>
+</span>
+
+
+</p>
+<p><span class="tag_in_topic" tag_id="4f178985d48ce1f82c0023ae">
+    <a href="/tag/原创文章">原创文章</a>
+</span>
+
+
+</p>
+<p><span class="tag_in_topic" tag_id="4f178995d48ce1f82c0023ef">
+    <a href="/tag/技术讨论">技术讨论</a>
+</span>
+
+
+
+</p>
+<pre><code><div class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"sep5"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>  </div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"col_fade"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"dark"</span> <span class="attribute">href</span>=<span class="value">"/user/snoopy"</span>&gt;</span>snoopy<span class="tag">&lt;/<span class="title">a</span>&gt;</span> 在 1-18 16:53发布</div><div class="line">  <span class="tag">&lt;/<span class="title">span</span>&gt;</span></div><br><div class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"sep5"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"col_fade"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"dark"</span> <span class="attribute">href</span>=<span class="value">"/user/snoopy"</span>&gt;</span>snoopy<span class="tag">&lt;/<span class="title">a</span>&gt;</span> 在 1-23 15:48重新编辑</div><div class="line">  <span class="tag">&lt;/<span class="title">span</span>&gt;</span></div><br><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"sp10"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"dark"</span> <span class="attribute">id</span>=<span class="value">"share_weibo_btn"</span> <span class="attribute">href</span>=<span class="value">"javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=3020045345',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','','分享来自CNode的话题：node-ccap模块生成captcha验证码','',''));"</span>&gt;</span>分享到 weibo<span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><br><br><div class="line">    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-success fr"</span> <span class="attribute">id</span>=<span class="value">"collect_btn"</span> <span class="attribute">action</span>=<span class="value">"collect"</span>&gt;</span>加入收藏<span class="tag">&lt;/<span class="title">button</span>&gt;</span></div></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-02-28T02:55:06.000Z"><a href="/2013/02/28/node-bigpipe/">Feb 28 2013</a></time>
       
       
@@ -489,143 +643,11 @@ section#s2!=s2
 
 
   
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-02-18T03:08:53.000Z"><a href="/2013/02/18/grunt/">Feb 18 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/02/18/grunt/">grunt 上手（一）</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><a href="http://www.gruntjs.com">grunt</a> 是一个基于任务的 JavaScript 项目命令行构建工具。
-它有一系列的插件工具能够根据需求、功能划分模块，如何将代码分成多个文件开发，合成一个发布；
-
-</p>
-<p>让我们开始安装grunt。
-
-</p>
-<p>首先需要<a href="http://nodejs.org/">Nodejs</a>环境，这里假设你已经安装好了<a href="http://nodejs.org/">Nodejs</a>和<a href="https://npmjs.org/">NPM</a>，然后安装grunt
-
-</p>
-<p>如果您以前在全局安装过grunt你需要先删除老的grunt。
-
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm uninstall -g grunt</div></code></pre></td></tr></table></figure>
-
-<p>然后安装在全局安装cli
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install -g grunt-cli</div></code></pre></td></tr></table></figure>
-
-<p>这时候你需要一个Gruntfile.js和package.json文件就可以使grunt简单的工作了。
-</p>
-<p><p>1.将路径切换到项目下。</p>
-</p>
-<p><p>2.安装项目所依赖的模块</p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>3.运行<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>下面让我们安装<a href="https://github.com/gruntjs/grunt-contrib-cssmin">grunt-contrib-cssmin</a>插件
-在项目目录下安装<a href="https://github.com/gruntjs/grunt-contrib-cssmin">grunt-contrib-cssmin</a>
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install grunt-contrib-cssmin --save-dev</div></code></pre></td></tr></table></figure>
-
-<p>然后在项目下Gruntfile.js里添加
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt.initConfig({</div><div class="line">    cssmin: {</div><div class="line">      compress: {</div><div class="line">        files: {</div><div class="line">          <span class="string">"dist/output.css"</span>: [<span class="string">"test/input.css"</span>, <span class="string">"test/input1.css"</span>]</div><div class="line">        }</div><div class="line">      }</div><div class="line">    }</div><div class="line">  });</div><br><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</div><br><div class="line">  grunt.registerTask(<span class="string">'css'</span>, [<span class="string">'cssmin'</span>]);</div><br></code></pre></td></tr></table></figure>
-
-<p>代表要使用这个插件
-
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</div></code></pre></td></tr></table></figure>
-
-<p>代表给grunt注册一个css任务来执行cssmin
-
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">  grunt.registerTask(<span class="string">'css'</span>, [<span class="string">'cssmin'</span>]);</div></code></pre></td></tr></table></figure>
-
-<p>然后可以通过<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt css</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>来运行
-
-</p>
-<p>如果写成<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'cssmin'</span>]);</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>则可以直接使用<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt </div></code></pre></td></tr></table></figure>
-
-</p>
-<p>来运行，将test文件夹的input.css和input1.css合并压缩到dist文件夹output.css。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-01-31T08:59:12.000Z"><a href="/2013/01/31/node/">Jan 31 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/01/31/node/">关于express 3+中ejs模板的问题</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <div class="sep10"></div> 
-<div class="topic_content">
-<p>这个问题的主要原因是express3+中取消了ejs默认的模范如果需要使用需要如下操作：<br>安装</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="title">npm</span> intall express-partials</div></code></pre></td></tr></table></figure>
-<p>在app.js中加入</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> partials = <span class="keyword">require</span>(<span class="string">'express-partials'</span>);</div></code></pre></td></tr></table></figure>
-
-<p>在app.configure()之中加入如下设置</p>
-
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">app.set(<span class="attribute">'view</span> engine', <span class="attribute">'ejs</span>');</div><div class="line">app.<span class="keyword">use</span>(partials()); </div></code></pre></td></tr></table></figure>
-<p>然后再在views目录中新建一个layout.ejs文件，然后就可以使用了。</p>
-</div>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
 
   <nav id="pagination">
   
+  
+    <a href="/tags/node/page/2/" class="alignright next">Next</a>
   
   <div class="clearfix"></div>
 </nav>
@@ -649,7 +671,7 @@ section#s2!=s2
   
     <li><a href="/tags/mongodb/">mongodb</a><small>1</small></li>
   
-    <li><a href="/tags/node/">node</a><small>4</small></li>
+    <li><a href="/tags/node/">node</a><small>6</small></li>
   
     <li><a href="/tags/other/">other</a><small>1</small></li>
   

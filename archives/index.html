@@ -63,6 +63,160 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-03-08T02:13:57.000Z"><a href="/2013/03/08/node-ccap/">Mar 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/03/08/node-ccap/">【转】node-ccap模块生成captcha验证码</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div class="sep10"></div> 
+      <div class="topic_content">
+        <p>用node做web开发很多都可能碰到需要验证码的地方，之前在github上搜索，有一些比如node-captcha等的类库，都需要依赖第三方的图形处理库或者软件，像我之前安装cario这个图形库时，真是费了好大一番劲，但是其实我们只用到了这些图形库的一点点小功能，比如图片的尺寸修改裁剪，或者生产验证码。</p>
+
+<p>先介绍一下CImg这个c++的图形库吧，CImg是一个跨平台的C++的图像处理库，提供了加载、处理、显示、保存等一系列功能，最吸引人的地方是整个图形库就一个CImg.h这个文件，所以非常的便携绿色环保，带到哪里都可以进行编译使用，不用安装一大推依赖。于是我就想利用这个CImg图形库做一个简单的demo，就从实现验证码这个功能入手，当然可以完全利用这个库来做裁剪图片等其他功能。</p>
+
+<p>ccap模块是基于CImg图形库的封装，让它可以供node使用，由于CImg图形库的便携性，所以ccap模块可以完全不依赖其他任何第三方图形库或者软件而独立工作，也就说如果只是想要生成简单的验证码，只要require这个ccap模块即可。</p>
+
+<p>生成的图片示例：</p>
+
+<p><a class="content_img" href="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499209454_QQ%E6%88%AA%E5%9B%BE20130118165250.jpg"><img src="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499209454_QQ%E6%88%AA%E5%9B%BE20130118165250.jpg" alt="enter image description here" title=""></a></p>
+
+<p>1、安装：<br>通用方法：npm install ccap<br>或者通过github下载，地址：<a href="https://github.com/DoubleSpout/ccap" target="_blank"></a><a href="https://github.com/DoubleSpout/ccap" target="_blank"><a href="https://github.com/DoubleSpout/ccap&lt;/a&gt;&lt;br&gt;博客地址：&lt;a">https://github.com/DoubleSpout/ccap&lt;/a&gt;&lt;br&gt;博客地址：&lt;a</a> href=&quot;<a href="http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/">http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/</a>&quot; target=&quot;_blank&quot;&gt;</a><a href="http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/" target="_blank"><a href="http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/&lt;/a&gt;&lt;/p&gt;">http://snoopyxdy.blog.163.com/blog/static/60117440201301842110923/&lt;/a&gt;&lt;/p&gt;</a>
+
+<p>2、性能：<br>在2cpu的linux 64位服务器上生成验证码速度可以达到1200次/秒，测试生成的图片是BMP的，jpeg的图片验证码生成速度大约在600次/秒。</p>
+
+<p>3、声明方法：</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> ccap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;ccap&#39;</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha1 </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">();</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha2 </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">(</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> height</span><span class="pun">,</span><span class="pln"> offset</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha3 </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">({</span><span class="pln">
+
+    width</span><span class="pun">:</span><span class="lit">256</span><span class="pun">,</span><span class="com">//set width,default is 256</span><span class="pln">
+
+    height</span><span class="pun">:</span><span class="lit">60</span><span class="pun">,</span><span class="com">//set height,default is 60</span><span class="pln">
+
+    offset</span><span class="pun">:</span><span class="lit">40</span><span class="pun">,</span><span class="com">//set text spacing,default is 40</span><span class="pln">
+
+    quality</span><span class="pun">:</span><span class="lit">100</span><span class="pun">,</span><span class="com">//set pic quality,default is 50</span><span class="pln">
+
+    generate</span><span class="pun">:</span><span class="kwd">function</span><span class="pun">(){</span><span class="com">//Custom the function to generate captcha text</span><span class="pln">
+
+         </span><span class="com">//generate captcha text here</span><span class="pln">
+
+         </span><span class="kwd">return</span><span class="pln"> text</span><span class="pun">;</span><span class="com">//return the captcha text</span><span class="pln">
+
+    </span><span class="pun">}</span><span class="pln">
+
+</span><span class="pun">});</span></code></pre>
+
+<p>可以通过上述代码实例化一个ccap类。<br>1、不传任何参数，全部使用默认的参数进行生成验证码<br>2、只传递宽，高，偏移进行实例化，调整图片的大小，和图片中文字的间隔<br>3、传递一个对象，除了宽，高和偏移，还传递了图片质量以及生成随机数的方法，ccap模块会根据自定义函数return的字符串作为图片验证码的内容，默认是0-9，A-Z的6位随即字符串。</p>
+
+<p>理论上可以生产很多不同的ccap的实例，而且他们之间互相没有影响，所以即使是通过cluster开启多进程的node同时生产验证码也不存在互相锁止的影响。</p>
+
+<p>对于图片质量只对jpeg图片有效，如果没有安装任何jpeg的lib库的话，只能使用bmp未压缩图形了，体积比较大，但是生成速度比较快。</p>
+
+<p>4、使用方法，get()：</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> ccap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;ccap&#39;</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> captcha </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">();</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> ary </span><span class="pun">=</span><span class="pln"> captcha</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">();</span><span class="com">//ary[0] is captcha&#39;s text,ary[1] is captcha picture buffer.</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> text </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> buffer </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">1</span><span class="pun">];</span></code></pre>
+
+<p>实例化ccap类之后，会得到captcha对象，这个对象只有一个对外方法，get()，这个方法每次调用都会返回验证码buffer和对应的text字符串内容，保存在数组里，类似这样的结构：</p>
+
+<pre class="prettyprint"><code><span class="pun">[</span><span class="str">&quot;captcha text&quot;</span><span class="pun">,</span><span class="str">&quot;picture buffer&quot;</span><span class="pun">]</span></code></pre>
+
+<p>5、一个简单的web例子：</p>
+
+<pre class="prettyprint"><code><span class="kwd">var</span><span class="pln"> http </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;http&#39;</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> ccap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">require</span><span class="pun">(</span><span class="str">&#39;ccap&#39;</span><span class="pun">)();</span><span class="com">//Instantiated ccap class </span><span class="pln">
+
+http</span><span class="pun">.</span><span class="pln">createServer</span><span class="pun">(</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="pln">request</span><span class="pun">,</span><span class="pln"> response</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">request</span><span class="pun">.</span><span class="pln">url </span><span class="pun">==</span><span class="pln"> </span><span class="str">&#39;/favicon.ico&#39;</span><span class="pun">)</span><span class="kwd">return</span><span class="pln"> response</span><span class="pun">.</span><span class="kwd">end</span><span class="pun">(</span><span class="str">&#39;&#39;</span><span class="pun">);</span><span class="com">//Intercept request favicon.ico</span><span class="pln">
+
+    </span><span class="kwd">var</span><span class="pln"> ary </span><span class="pun">=</span><span class="pln"> ccap</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">();</span><span class="pln">
+
+    </span><span class="kwd">var</span><span class="pln"> txt </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+
+    </span><span class="kwd">var</span><span class="pln"> buf </span><span class="pun">=</span><span class="pln"> ary</span><span class="pun">[</span><span class="lit">1</span><span class="pun">];</span><span class="pln">
+
+    response</span><span class="pun">.</span><span class="kwd">end</span><span class="pun">(</span><span class="pln">buf</span><span class="pun">);</span><span class="pln">
+
+    console</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="pln">txt</span><span class="pun">);</span><span class="pln">
+
+</span><span class="pun">}).</span><span class="pln">listen</span><span class="pun">(</span><span class="lit">8124</span><span class="pun">);</span><span class="pln">
+
+console</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="str">&#39;Server running at </span><a href="http://127.0.0.1:8124/" target="_blank"><span class="str"><a href="http://127.0.0.1:8124/&lt;/span&gt;&lt;/a&gt;&lt;span">http://127.0.0.1:8124/&lt;/span&gt;&lt;/a&gt;&lt;span</a> class=&quot;str&quot;&gt;&#39;</span><span class="pun">);</span></code></pre>
+
+<p>上面这个例子会将验证码返回给客户端，并且把对应的验证码的文字输出出来，同时拦截了favicon.ico的请求。</p>
+
+<p>结果如下图：</p>
+
+<p><a class="content_img" href="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499487579_QQ%E6%88%AA%E5%9B%BE20130118165739.jpg"><img src="http://cnodejs.org/upload/4efc278525fa69ac690000f7/1358499487579_QQ%E6%88%AA%E5%9B%BE20130118165739.jpg" alt="enter image description here" title=""></a></p>
+
+<p>有兴趣的TX可以下载下来试试，如果安装有jpeg库的话，可以把根目录下的binding.jpeg.gyp覆盖改名为binding.gyp然后rebuild就可以使用jpeg图片作为验证码了，体积会小很多。另外ccap模块做了一些缓存的机制，尽量发挥更好的性能。</p>
+
+<p>目前ccap已经对linux系统支持jpeg验证码，体积从45kb直降到6kb，欢迎下载试用，有任何问题请留言<br><a href="http://cnodejs.org/topic/50f90d8edf9e9fcc58a5ee0b" target="_blank">ccap使用libjpeg库</a></p>
+      </div>
+      <div class="sep10"></div> 
+
+<pre><code><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"col_fade"</span>&gt;</span>标签：<span class="tag">&lt;/<span class="title">span</span>&gt;</span> </div></code></pre>
+<p><span class="tag_in_topic" tag_id="4f17897cd48ce1f82c0023aa">
+    <a href="/tag/入门教程">入门教程</a>
+</span>
+
+
+</p>
+<p><span class="tag_in_topic" tag_id="4f178985d48ce1f82c0023ae">
+    <a href="/tag/原创文章">原创文章</a>
+</span>
+
+
+</p>
+<p><span class="tag_in_topic" tag_id="4f178995d48ce1f82c0023ef">
+    <a href="/tag/技术讨论">技术讨论</a>
+</span>
+
+
+
+</p>
+<pre><code><div class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"sep5"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>  </div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"col_fade"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"dark"</span> <span class="attribute">href</span>=<span class="value">"/user/snoopy"</span>&gt;</span>snoopy<span class="tag">&lt;/<span class="title">a</span>&gt;</span> 在 1-18 16:53发布</div><div class="line">  <span class="tag">&lt;/<span class="title">span</span>&gt;</span></div><br><div class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"sep5"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"col_fade"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"dark"</span> <span class="attribute">href</span>=<span class="value">"/user/snoopy"</span>&gt;</span>snoopy<span class="tag">&lt;/<span class="title">a</span>&gt;</span> 在 1-23 15:48重新编辑</div><div class="line">  <span class="tag">&lt;/<span class="title">span</span>&gt;</span></div><br><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"sp10"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"dark"</span> <span class="attribute">id</span>=<span class="value">"share_weibo_btn"</span> <span class="attribute">href</span>=<span class="value">"javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=3020045345',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','','分享来自CNode的话题：node-ccap模块生成captcha验证码','',''));"</span>&gt;</span>分享到 weibo<span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><br><br><div class="line">    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-success fr"</span> <span class="attribute">id</span>=<span class="value">"collect_btn"</span> <span class="attribute">action</span>=<span class="value">"collect"</span>&gt;</span>加入收藏<span class="tag">&lt;/<span class="title">button</span>&gt;</span></div></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-02-28T02:55:06.000Z"><a href="/2013/02/28/node-bigpipe/">Feb 28 2013</a></time>
       
       
@@ -489,481 +643,11 @@ section#s2!=s2
 
 
   
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-02-18T03:08:53.000Z"><a href="/2013/02/18/grunt/">Feb 18 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/02/18/grunt/">grunt 上手（一）</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><a href="http://www.gruntjs.com">grunt</a> 是一个基于任务的 JavaScript 项目命令行构建工具。
-它有一系列的插件工具能够根据需求、功能划分模块，如何将代码分成多个文件开发，合成一个发布；
-
-</p>
-<p>让我们开始安装grunt。
-
-</p>
-<p>首先需要<a href="http://nodejs.org/">Nodejs</a>环境，这里假设你已经安装好了<a href="http://nodejs.org/">Nodejs</a>和<a href="https://npmjs.org/">NPM</a>，然后安装grunt
-
-</p>
-<p>如果您以前在全局安装过grunt你需要先删除老的grunt。
-
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm uninstall -g grunt</div></code></pre></td></tr></table></figure>
-
-<p>然后安装在全局安装cli
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install -g grunt-cli</div></code></pre></td></tr></table></figure>
-
-<p>这时候你需要一个Gruntfile.js和package.json文件就可以使grunt简单的工作了。
-</p>
-<p><p>1.将路径切换到项目下。</p>
-</p>
-<p><p>2.安装项目所依赖的模块</p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>3.运行<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>下面让我们安装<a href="https://github.com/gruntjs/grunt-contrib-cssmin">grunt-contrib-cssmin</a>插件
-在项目目录下安装<a href="https://github.com/gruntjs/grunt-contrib-cssmin">grunt-contrib-cssmin</a>
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install grunt-contrib-cssmin --save-dev</div></code></pre></td></tr></table></figure>
-
-<p>然后在项目下Gruntfile.js里添加
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt.initConfig({</div><div class="line">    cssmin: {</div><div class="line">      compress: {</div><div class="line">        files: {</div><div class="line">          <span class="string">"dist/output.css"</span>: [<span class="string">"test/input.css"</span>, <span class="string">"test/input1.css"</span>]</div><div class="line">        }</div><div class="line">      }</div><div class="line">    }</div><div class="line">  });</div><br><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</div><br><div class="line">  grunt.registerTask(<span class="string">'css'</span>, [<span class="string">'cssmin'</span>]);</div><br></code></pre></td></tr></table></figure>
-
-<p>代表要使用这个插件
-
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt.loadNpmTasks(<span class="string">'grunt-contrib-cssmin'</span>);</div></code></pre></td></tr></table></figure>
-
-<p>代表给grunt注册一个css任务来执行cssmin
-
-</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">  grunt.registerTask(<span class="string">'css'</span>, [<span class="string">'cssmin'</span>]);</div></code></pre></td></tr></table></figure>
-
-<p>然后可以通过<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">grunt css</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>来运行
-
-</p>
-<p>如果写成<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'cssmin'</span>]);</div></code></pre></td></tr></table></figure>
-
-</p>
-<p>则可以直接使用<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"> grunt </div></code></pre></td></tr></table></figure>
-
-</p>
-<p>来运行，将test文件夹的input.css和input1.css合并压缩到dist文件夹output.css。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-02-01T06:51:46.000Z"><a href="/2013/02/01/mongoskin-api/">Feb 1 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/02/01/mongoskin-api/">mongoskin与实例教程</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>如果你不熟悉使用MongoDB，我会强烈建议您先通过这个MongoDB的教程，让你知道的基本知识MongoDB的，从Mongoskin能得到什么。
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">npm install mongoskin</div></code></pre></td></tr></table></figure>
-当您安装Mongoskin，您可能会看到此消息：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">To install <span class="keyword">with</span> C++ bson parser <span class="keyword">do</span> &lt;npm install mongodb --mongodb:native&gt;</div></code></pre></td></tr></table></figure>
-不要过分担心。C + +的BSON解析器现在实际上是不赞成使用的JavaScript分析器有了很大的提高。只要忽略该消息。
-
-</p>
-<p>下面是一个例子
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div></code></pre></td><td class="code"><pre><code><div class="line">$ mongo</div><div class="line">&gt; use rockband</div><div class="line">&gt; db.bands.insert({name: <span class="string">'Hollywood Rose'</span>, members: [<span class="string">'Axl Rose'</span>, <span class="string">'Izzy Stradlin'</span>, <span class="string">'Chris Weber'</span>], year: <span class="number">1984</span>})</div><div class="line">&gt; db.bands.insert({name: <span class="string">'Road Crew'</span>, members: [<span class="string">'Slash'</span>, <span class="string">'Steven Adler'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">1984</span>})</div><div class="line">&gt; db.bands.insert({name: <span class="string">'L.A. Guns'</span>, members: [<span class="string">'Tracy Guns'</span>, <span class="string">'Paul Black'</span>, <span class="string">'Mick Cripps'</span>, <span class="string">'Nickey Alexander'</span>], year: <span class="number">1985</span>})</div><div class="line">&gt; db.bands.insert({name: <span class="string">"Velvet Revolver"</span>, members: [<span class="string">'Scott Weiland'</span>, <span class="string">'Slash'</span>, <span class="string">'Dave Kushner'</span>, <span class="string">'Matt Sorum'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">2002</span>})</div></code></pre></td></tr></table></figure>
-我们在rockband数据库创建了4个数据。
-
-</p>
-<p>现在是时候引入 mongokin 脚本了，你这样做。
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> db = require(<span class="string">'mongoskin'</span>).db(<span class="string">'localhost:27017/rockband'</span>); </div></code></pre></td></tr></table></figure>
-这将创建一个实例连接到MongoDB的，默认情况下它连接到数据库rockband的。我命名实例的数据库，从而保持一致MongoDB的命令行的数据库对象。今后所有的数据库实例的实例，我们就创建了一个参考。
-
-</p>
-<p>现在，如果你需要进行身份验证连接到数据库呢？身份验证使用Mongoskin是很容易的，只包括认证creds在这样的实例代码：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> db = require(<span class="string">'mongoskin'</span>).db(<span class="string">'dewey:tehrock@localhost:27017/rockband'</span>);</div></code></pre></td></tr></table></figure>
-“dewey”是用户名，“tehrock”是密码。
-
-</p>
-<p>本教程的其余部分将显示蒙戈的命令及其等价物在Mongoskin。如果你不知道的MongoDB的基本知识，你可能会发现很难仿效，所以一定要确保你已经通过<a href="http://www.hacksparrow.com/the-mongodb-tutorial.html"> MongoDB </a>的教程。
-
-</p>
-<p>查看一个集合中现有数据
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">db.bands.find()</div></code></pre></td></tr></table></figure>
-在Mongoskin中，是这样的：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).find().toArray(<span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    console.log(result);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-我们使用的toArray()函数来转换的<a href="https://github.com/guileen/node-mongoskin#skincursor"> Mongoskin </a>对开发人员友好的阵列。
-那么，有什么不用toArray()的方法吗？在这里，它是：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).find({}, <span class="keyword">function</span>(err, result) {</div><div class="line">    result.each(<span class="keyword">function</span>(err, band) {</div><div class="line">        console.log(band);</div><div class="line">    });</div><div class="line">});</div></code></pre></td></tr></table></figure>
-从集合中查找一个列表
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.findOne()</div></code></pre></td></tr></table></figure>
-在mongiskin里是这样的：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).findOne(<span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    console.log(result);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-注意：我们不转换上面的列阵，因为结果只有一个。
-现在，让我们添加另一个文档的集合：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.insert({name: <span class="string">"Guns N' Roses"</span>, members: [<span class="string">'Axl Rose'</span>, <span class="string">'Slash'</span>, <span class="string">'Izzy Stradlin'</span>, <span class="string">'Matt Sorum'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">1986</span>});</div></code></pre></td></tr></table></figure>
-同样在mongoskin中：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).insert({name: <span class="string">"Guns N' Roses"</span>, members: [<span class="string">'Axl Rose'</span>, <span class="string">'Slash'</span>, <span class="string">'Izzy Stradlin'</span>, <span class="string">'Matt Sorum'</span>, <span class="string">'Duff McKagan'</span>], year: <span class="number">1986</span>}, <span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    <span class="keyword">if</span> (result) console.log(<span class="string">'Added!'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-我需要更换成员Matt Sorum与 Steven Adler。mongodb是这么做的：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$pull'</span>:{members:<span class="string">'Matt Sorum'</span>}})</div><div class="line">&gt; db.bands.update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$push'</span>:{members:<span class="string">'Steven Adler'</span>}})</div></code></pre></td></tr></table></figure>
-在Mongoskin中：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$pull'</span>:{members:<span class="string">'Matt Sorum'</span>}}, <span class="keyword">function</span>(err) {</div><div class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">    db.collection(<span class="string">'bands'</span>).update({name:<span class="string">"Guns N' Roses"</span>}, {<span class="string">'$push'</span>:{members:<span class="string">'Steven Adler'</span>}}, <span class="keyword">function</span>(err) {</div><div class="line">        <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</div><div class="line">        console.log(<span class="string">'Updated!'</span>);</div><div class="line">    });</div><div class="line">});</div></code></pre></td></tr></table></figure>
-现在，让我们在Mongoskin中做一些有条件的选择。
-提示：db.collection（&quot;hands&quot;）可以存储在一个变量命名hands中，使我们的Mongoskin代码更精简，让我们这样做：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> bands = db.collection(<span class="string">'bands'</span>);</div></code></pre></td></tr></table></figure>
-现在在collection中使用count()函数。
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.count()</div><div class="line">&gt; db.bands.count({year:{$gte:<span class="number">1985</span>}})</div></code></pre></td></tr></table></figure>
-在mongoskin：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div></code></pre></td><td class="code"><pre><code><div class="line">bands.count(<span class="keyword">function</span>(err, count) {</div><div class="line">    console.log(<span class="string">'There are '</span> + count + <span class="string">' bands in the database'</span>);</div><div class="line">});</div><br><div class="line">bands.count({year:{$gte:<span class="number">1985</span>}}, <span class="keyword">function</span>(err, count) {</div><div class="line">    console.log(count + <span class="string">' bands were formed in 1985 or later'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-这里会查找year大于等于1985数据的数量。
-现在，让我们尝试更新文件：
-mongo shell： 
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.update({name:<span class="string">'Hollywood Rose'</span>}, {$set:{year:<span class="number">1983</span>}})</div></code></pre></td></tr></table></figure>
-mongoskin:
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div></code></pre></td><td class="code"><pre><code><div class="line">bands.update({name:<span class="string">'Hollywood Rose'</span>}, {$set:{year:<span class="number">2000</span>}}, <span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (!err) console.log(<span class="string">'Year updated!'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-删除一个记录，mongo shell：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line">&gt; db.bands.remove({name:<span class="string">'Velvet Revolver'</span>})</div></code></pre></td></tr></table></figure>
-mongoskin：
-</p>
-<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div></code></pre></td><td class="code"><pre><code><div class="line">db.collection(<span class="string">'bands'</span>).remove({name:<span class="string">'Velvet Revolver'</span>}, <span class="keyword">function</span>(err, result) {</div><div class="line">    <span class="keyword">if</span> (!err) console.log(<span class="string">'VR deleted!'</span>);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-在学习mongokin的过程中整理了这个教程。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-01-31T09:30:54.000Z"><a href="/2013/01/31/editor/">Jan 31 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/01/31/editor/">仅一行代码，打造一个在线编辑器</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <div class="mainContent sep10">
-        <p><img src="http://a.36krcnd.com/photo/35cf53371ddaa066da1e68ef0f34f3f4.jpg!heading" alt=""><br>
-在大部分人眼里，技术宅给人的印象是沉默寡言，总摸不透他心里想些什么，彼此都保持距离。作为半个程序员，我觉得真正的技术宅大部分时间都在找乐子，鼓捣各种想法，和大部分人的极客心理是一样的，程序员也还爱讲笑话，也喜欢烧菜做饭，虽然大多是为了减减压，这样看来和常人没什么不一样。</p>
-
-<p>不一样的地方，技术宅崇尚极致，喜欢极简，又希望简约不简单，背后就是技术宅满心思的不断的尝试，我正在看着一出好戏在上演：</p>
-程序员 Jose Jesus Perez Aguinaga 在 <a target="_blank" data-no-turbolink="true" href="https://coderwall.com/p/lhsrcq">CoderWall</a> 分享了一个小技巧：在浏览器地址栏中输入一行代码：<code>data:text/html, &lt;html contenteditable&gt;</code> ，回车即可把浏览器变临时编辑器（需要浏览器支持 HTML5 属性  contenteditable）。不少程序员受 Jose 的启发，开始对这行代码<a target="_blank" data-no-turbolink="true" href="http://blog.jobbole.com/32823/">加工改造</a>，比如改成支持 Ruby 语法高亮的<a target="_blank" data-no-turbolink="true" href="https://gist.github.com/4666256">编辑器</a>……&quot;</p>
-
-<p> 从引子中可以看到，本来只是简短的小段代码： <code>data:text/html, &lt;html contenteditable&gt;</code>，经过程序员们不断改造，从一个简单的可编辑页面，逐步变成了包括支持 Java、Ruby、Python 等多种 编程语言高亮的代码编辑器，截至不到 1 个小时的最后更新，我已经看到了一个和 <a target="_blank" data-no-turbolink="true" href="http://notepad.cc">notepad.cc</a> 网站功能相近，使用了第三方网站数据库 API 服务存储内容的 <a target="_blank" data-no-turbolink="true" href="https://gist.github.com/4672169">在线编辑器</a> 了：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div></code></pre></td><td class="code"><pre><code><div class="line">data:text/html,</div><div class="line"><span class="xml"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span><span class="css"></div><div class="line"><span class="id">#e</span> <span class="rules">{</div><div class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value">absolute;</span></span></div><div class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">right</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">bottom</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">left</span>:<span class="value"><span class="number">0</span>;</span></span></div><div class="line">  <span class="rule"><span class="attribute">font-size</span>:<span class="value"><span class="number">16</span>px;</span></span></div><div class="line"><span class="rule">}</span></span></div><div class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"e"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js"</span>&gt;</span><span class="undefined">&lt;/script&amp;gt;</div><div class="line">&lt;script src="http://code.jquery.com/jquery-1.9.0.min.js"&gt;&lt;/script&amp;gt;</div><div class="line">&lt;script&gt;</div><div class="line">var myKey="SecretKeyz";</div><div class="line">$(document).ready(function(){</div><div class="line">    var e = ace.edit("e");</div><div class="line">    var url = "http://api.openkeyval.org/"+myKey;</div><div class="line">    $.ajax({</div><div class="line">      url: url,</div><div class="line">      dataType: "jsonp",</div><div class="line">      success: function(data){</div><div class="line">       e.setTheme("ace/theme/tomorrow_night_eighties");</div><div class="line">       e.getSession().setMode("ace/mode/markdown");</div><div class="line">       e.setValue(data);</div><div class="line">      }</div><div class="line">    });</div><br><div class="line">    $("#e").on("keydown", function (b) {</div><div class="line">      if (b.ctrlKey &amp;&amp; 83 == b.which) {</div><div class="line">        b.preventDefault();</div><div class="line">        var data = myKey+"="+encodeURIComponent(e.getValue());</div><div class="line">        $.ajax({</div><div class="line">          data: data,</div><div class="line">          url: "http://api.openkeyval.org/store/",</div><div class="line">          dataType: "jsonp",</div><div class="line">          success: function(data){</div><div class="line">            alert("Saved.");</div><div class="line">          }</div><div class="line">        });</div><div class="line">      }</div><div class="line">    });</div><div class="line">});</div><div class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></div></code></pre></td></tr></table></figure>
-
-<p>将以上代码完整复制，粘贴到 Chrome 或者 Firefox，Safari 浏览器地址栏中（不支持低版本 IE 浏览器），回车打开，稍等片刻一个支持 <code>CTRL</code> + <code>S</code>  保存内容的在线编辑器呈现眼前。</p>
-
-<p>仅一行代码，实现功能相当于系统的记事本程序，感慨技术宅的艺术造诣吧？～</p>
-
-<p><em>Update: 感谢 @问题青年a 提供 CoderWall 分享原文。</em></p>
-        <div id="krapi"></div>
-</div>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-01-31T08:59:12.000Z"><a href="/2013/01/31/node/">Jan 31 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/01/31/node/">关于express 3+中ejs模板的问题</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <div class="sep10"></div> 
-<div class="topic_content">
-<p>这个问题的主要原因是express3+中取消了ejs默认的模范如果需要使用需要如下操作：<br>安装</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="title">npm</span> intall express-partials</div></code></pre></td></tr></table></figure>
-<p>在app.js中加入</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">var</span> partials = <span class="keyword">require</span>(<span class="string">'express-partials'</span>);</div></code></pre></td></tr></table></figure>
-
-<p>在app.configure()之中加入如下设置</p>
-
-<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line">app.set(<span class="attribute">'view</span> engine', <span class="attribute">'ejs</span>');</div><div class="line">app.<span class="keyword">use</span>(partials()); </div></code></pre></td></tr></table></figure>
-<p>然后再在views目录中新建一个layout.ejs文件，然后就可以使用了。</p>
-</div>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-01-31T07:09:39.000Z"><a href="/2013/01/31/appfog/">Jan 31 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/01/31/appfog/">Appfog dot.tk namecheap搭建免费顶级域名动态dns站点</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <div class="media"><div class="media-body"><p class="p0">
-    <strong><a href="https://www.appfog.com/" target="_blank">Appfog</a></strong> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;2G<span>的免费空间和数据库支持，访问速度还可以，偶尔Appfog管理网站很卡&nbsp;<span>，总的说来相当之哈皮</span>！</span> 
-</p>
-<p class="p0">
-    <span></span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;Appfog<span>支持的开发语言和框架：</span> 
-</p>
-<p class="p0">
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359208800/1359208799108.png" alt=""></span><span style="line-height:1.5;">&nbsp; &nbsp;&nbsp;</span> 
-</p>
-<p class="p0">
-    <span></span> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp; 支持的数据库：
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359208930/1359208929623.png" alt=""> 
-</p>
-<p class="p0">
-    <br>
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;以及丰富的第三方服务，这里就不一一列举了！
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;前面已经介绍过日志<a href="http://www.dreamlu.net/blog/5" target="_blank">Logentries</a>和图片<a href="http://www.dreamlu.net/blog/6" target="_blank">Cloudinary</a>服务。
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;详细文档：<a href="https://docs.appfog.com/"><a href="https://docs.appfog.com/&lt;/a&gt;">https://docs.appfog.com/&lt;/a&gt;</a> 
-</p>
-<p class="p0">
-    <br>
-</p>
-<p class="p0" style="background:#FFFFFF;">
-    <strong><a href="http://www.dot.tk/" target="_blank">Dot.tk</a></strong> 
-</p>
-<p class="p0" style="background:#FFFFFF;">
-    &nbsp;&nbsp;&nbsp;&nbsp;.TK<span>是南太平洋岛国托克劳的国家域名</span>，免费注册一个帐户可以任意申请<span>.TK</span><span>域名，支持域名转发（可隐藏原</span><span>URL</span><span>）、电邮转发、</span><span>A</span><span>记录解析、</span><span>CNAME</span><span>。</span> 
-</p>
-<p class="p0" style="background:#FFFFFF;">
-    &nbsp;&nbsp;&nbsp;&nbsp;并且<span>google</span><span>对</span><span>.tk</span><span>的收录并没有歧视，与其他顶级域名是一样</span>！
-</p>
-<p class="p0" style="background:#FFFFFF;">
-    <br>
-</p>
-<p class="p0">
-    <strong><a href="http://www.namecheap.com/" target="_blank">namecheap.com</a></strong> 
-</p>
-<p class="p0">
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;是一个</span><span>DNS</span><span>提供商，也提供免费服务。这个相比其他</span><span>DNS</span><span>提供商最大的优点就是可以自定义</span><span>TTL</span><span>，也就是</span><span>dns</span><span>更新频率，非常适合动态</span><span>IP</span><span>用户。</span> 
-</p>
-<p class="p0">
-    <br>
-</p>
-<p class="p0">
-    <strong>域名绑定和</strong><span><strong>dns</strong></span><span><strong>配置：</strong></span> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp; 1.&nbsp; &nbsp;&nbsp;<span style="line-height:1.5;">申请.tk域名</span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359209479/1359209479315.png" alt=""> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp; 2.&nbsp; &nbsp;&nbsp;<span style="line-height:1.5;">&nbsp;配置域名</span> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp;&nbsp;<span style="line-height:1.5;">本博已</span><span style="line-height:1.5;">snode.tk</span><span style="line-height:1.5;">和</span><a href="http://www.snode.tk">www.snode.tk</a><span style="line-height:1.5;">为例！</span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359209595/1359209595091.png" alt=""> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp;&nbsp;<span style="line-height:1.5;">第一个是域名转发，选择这个点</span><span style="line-height:1.5;">configure</span><span style="line-height:1.5;">，如果接下来在下面输入</span><a href="http://www.google.com/"><a href="http://www.google.com&lt;/a&gt;&lt;span">http://www.google.com&lt;/a&gt;&lt;span</a> style=&quot;line-height:1.5;&quot;&gt;那么当你访问</span><span style="line-height:1.5;">snode.tk的时候就会自动跳转到</span><span style="line-height:1.5;">Google</span><span style="line-height:1.5;">了。</span> 
-</p>
-<p class="p0" style="text-align:justify;">
-    &nbsp;&nbsp;&nbsp;&nbsp;第二个是使用<span>dot.tk</span><span>本身的免费</span><span>Dns</span><span>服务，有</span><span>A</span><span>，</span><span>CNAME</span><span>，</span><span>MX</span><span>三个选项，可以设置很多子域名，要求不高可以自己用这个。</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;第三个就是我要说的重点了，我是这么设置的：<span>freedns1.registrar-servers.com</span><span>这三个就是</span><span>namecheap.com</span><span>提供的免费域名解析地址。</span> 
-</p>
-<p class="p0" style="text-align:justify;">
-    <span> </span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namecheap.com Dns<span>设置关联</span><span style="line-height:1.5;">&nbsp; &nbsp;</span> 
-</p>
-<p class="p0">
-    <span> </span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;首先注册登录选择<span>FreeDns,</span><span>就是这个界面</span><span>,</span><span>输入我们要</span>绑定的域名snode.tk<span>点击</span><span>Next</span><span>，</span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;freedns1.registrar-servers.com<span>这几个出现了：</span> 
-</p>
-<p>
-    <br>
-</p>
-<p class="p0">
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359209739/1359209738639.png" alt=""><br>
-</span> 
-</p>
-<p class="p0">
-    <span> </span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;点击“Free Dns”
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359209883/1359209883310.png" alt=""> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp;&nbsp;<span style="line-height:1.5;">点击</span><span style="line-height:1.5;">“</span><span style="line-height:1.5;">Add&nbsp;DNS&nbsp;Service&nbsp;for&nbsp;Selected&nbsp;Domains</span><span style="line-height:1.5;">”</span> 
-</p>
-<p class="p0">
-    &nbsp; &nbsp; 下一步“<span style="line-height:1.5;">Go&nbsp;to&nbsp;the&nbsp;Hosted&nbsp;Domains&nbsp;Page”<span>绑定ip</span>/url</span><span style="line-height:1.5;"></span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359210014/1359210014120.png" alt=""> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<span>绿色的用来添加，此处的</span><span>Ip/Url</span><span>从</span><span>Appfog</span><span>中获取！</span> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359210144/1359210143882.png" alt=""> 
-</p>
-<p class="p0">
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://res.cloudinary.com/ha1jeueli/image/upload/v1359210171/1359210171237.png" alt=""> 
-</p>
-<p class="p0">
-    <br>
-</p>
-<p class="p0">
-    设置要<span>30</span><span>分钟甚至几个小时才能生效</span>，稍安毋躁！
-</p>
-<p class="p0" style="background:#FFFCF6;">
-    <strong>临渊羡鱼</strong><span><strong>,</strong></span><span><strong>不如退而结网</strong></span><span><strong>;</strong></span><span><strong>扬汤止沸</strong></span><span><strong>,</strong></span><span><strong>不如釜底抽薪</strong></span><strong>！</strong><span style="line-height:1.5;"></span> 
-</p>
-<p class="p0" style="background:#FFFCF6;">
-    <br>
-</p></div></div>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
 
   <nav id="pagination">
   
+  
+    <a href="/archives/page/2/" class="alignright next">Next</a>
   
   <div class="clearfix"></div>
 </nav>
@@ -987,7 +671,7 @@ mongoskin：
   
     <li><a href="/tags/mongodb/">mongodb</a><small>1</small></li>
   
-    <li><a href="/tags/node/">node</a><small>4</small></li>
+    <li><a href="/tags/node/">node</a><small>6</small></li>
   
     <li><a href="/tags/other/">other</a><small>1</small></li>
   

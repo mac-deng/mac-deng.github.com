@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>mongodb | mac's blog</title>
+  <title>Page 2 | Archives: 2013/02 | mac's blog</title>
   <meta name="author" content="mac">
   
   <meta name="description" content="some Experience">
@@ -53,7 +53,38 @@
     <div id="main-col" class="alignleft"><div id="wrapper">
 
 
-<h2 class="archive-title tag">mongodb</h2>
+<h2 class="archive-title">2013/02</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-02-08T04:26:05.000Z"><a href="/2013/02/08/node-uuid/">Feb 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/02/08/node-uuid/">分享一段用生成uuid的代码</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div></code></pre></td><td class="code"><pre><code><div class="line">	<span class="function"><span class="keyword">function</span> <span class="title">uuid</span><span class="params">()</span> {</span></div><div class="line">	    <span class="comment">// http://www.ietf.org/rfc/rfc4122.txt</span></div><div class="line">	    <span class="keyword">var</span> s = [];</div><div class="line">	    <span class="keyword">var</span> hexDigits = <span class="string">"0123456789abcdef"</span>;</div><div class="line">	    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">36</span>; i++) {</div><div class="line">	        s[i] = hexDigits.substr(Math.floor(Math.random() * <span class="number">0x10</span>), <span class="number">1</span>);</div><div class="line">	    }</div><div class="line">	    s[<span class="number">14</span>] = <span class="string">"4"</span>;  <span class="comment">// bits 12-15 of the time_hi_and_version field to 0010</span></div><div class="line">	    s[<span class="number">19</span>] = hexDigits.substr((s[<span class="number">19</span>] &amp; <span class="number">0x3</span>) | <span class="number">0x8</span>, <span class="number">1</span>);  <span class="comment">// bits 6-7 of the clock_seq_hi_and_reserved to 01</span></div><div class="line">	    s[<span class="number">8</span>] = s[<span class="number">13</span>] = s[<span class="number">18</span>] = s[<span class="number">23</span>] = <span class="string">"-"</span>;</div><br><div class="line">	    <span class="keyword">var</span> uuid = s.join(<span class="string">""</span>);</div><div class="line">	    <span class="keyword">return</span> uuid;</div><div class="line">	}</div></code></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
 
 
   
@@ -174,6 +205,8 @@ mongoskin：
   
 
   <nav id="pagination">
+  
+    <a href="/archives/2013/02/" class="alignleft prev">Prev</a>
   
   
   <div class="clearfix"></div>
